@@ -1,0 +1,87 @@
+<script>
+    let currentUser = null;
+
+    const ErrorType = {
+        AUTH: 'auth',
+        DATABASE: 'database',
+        VALIDATION: 'validation',
+        JSON_PARSE: 'json_parse',
+    };
+
+    const ErrorCatalog = {
+        1001 : { type: ErrorType.AUTH, message: 'Invalid email or password' },
+        
+        2001 : { type: ErrorType.DATABASE, message: 'Failed to fetch user data' },
+
+        3001: { type: ErrorType.VALIDATION, message: 'Invalid Email Format' },
+        3002: { type: ErrorType.VALIDATION, message: 'Password to frail' },
+
+        4001: { type: ErrorType.JSON_PARSE, message: 'Failed to parse JSON' }
+    }   
+
+    const ErrorHandler = {
+        getError: (code)=>{
+            return ErrorCatalog[code] || {
+                type: 'unkown',
+                message: 'An unexpected error has ocurred'
+            }
+        },
+        showError: (error, additionalInfo = '') => {
+            const errorDetails = ErrorHandler.getError(error);
+            Swal.fire({
+                icon: 'error',
+                title: `${errorDetails.type.toUpperCase()} Error`,
+                text: `${errorDetails.message}, ${additionalInfo ? `Additional Info: ${additionalInfo}}` : ''}`,
+                footer: `Error Code: ${error}`
+            })
+        }
+    }
+
+    $(document).ready(function(){
+        $("#loginBtn").click(function(){
+            const email = $("#loginEmail").val();
+            const password = $("#loginPassword").val();
+
+            google.script.run
+                .withFailureHandler((error) => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `${error}`,
+                    })
+                })
+                .withSuccessHandler((response)=>{
+                    try{
+                        response = JSON.parse(response);
+                        if ( response.error ){
+                            switch( response.error ){
+                                case 401:
+                                    ErrorHandler.showError(1001);
+                                    break;
+                                case 500:
+                                    ErrorHandler.showError(2001);
+                                    break;
+                                default:
+                                    ErrorHandler.showError(0, response.error);
+                            }
+                            return;
+                        }
+
+                        currentUser = response;
+                        $("#loginForm").hide();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Welcome!',
+                            text: `Welcome ${currentUser.name}`,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }catch(e){
+                        ErrorHandler.showError(4001, `stack: ${e.stack}, response:${response}`);
+                    }
+                }).loginUser(email, password);
+        })
+
+        
+    })
+</script>

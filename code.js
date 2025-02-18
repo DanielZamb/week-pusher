@@ -7,6 +7,10 @@ function doGet(e) {
   return Template;
 }
 
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+
 const db = gasDB.init(
   "week-pusher-db",
   "1lZD4Z0n1CMytII1X66lTBBh7zxIPDlg8JW7XLRm07K0"
@@ -221,7 +225,7 @@ function getAllUserWeekTemplates(userId) {
   return JSON.stringify(response);
 }
 
-// loginUser("hola@email", "dddddddddddd1");
+// loginUser("hola@email", "ddddddddddddd");
 /**
  * CRUD WEEK TEMPLATES
  */

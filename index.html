@@ -2,8 +2,113 @@
 <html>
   <head>
     <base target="_top">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   </head>
-  <body>
-    hola
+  <body class="bg-gray-100">
+    <nav class="bg-white shadow-lg">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+          <div class="text-xl font-semibold text-gray-800">Week Scheduler</div>
+            <div id="user-info" class="hidden">
+              <span class="text-gray-600 mr-4" id="userName"></span>
+              <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+      </div>
+    </nav>
+
+    <div id="loginForm" class="max-w-md mx-auto mt-10 bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+          <input type="email" id="loginEmail" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+          <input type="password" id="loginPassword" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <button id="loginBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
+          Log In
+        </button>
+      </div>
+    </div>
+
+    <div id="mainContent" class="max-w-xl mx-auto mt-8 px4">
+      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-cl font-bold">Week Templates</h2>
+          <button id="newTemplateModalBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+            New Template
+            <i class="bi bi-plus-circle ms-2"></i>
+          </button>
+          <div id="templateList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            aaaaa
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-bold mb-6">Current Schedule</h2>
+      <div class="grid grid-cols-7 gap-4">
+          <!-- Days of the week -->
+          <div class="text-center font-semibold">Mon</div>
+          <div class="text-center font-semibold">Tue</div>
+          <div class="text-center font-semibold">Wed</div>
+          <div class="text-center font-semibold">Thu</div>
+          <div class="text-center font-semibold">Fri</div>
+          <div class="text-center font-semibold">Sat</div>
+          <div class="text-center font-semibold">Sun</div>
+          
+          <!-- Schedule cells -->
+          <div class="border rounded-lg p-2 min-h-[200px]" id="day-1"></div>
+          <div class="border rounded-lg p-2 min-h-[200px]" id="day-2"></div>
+          <div class="border rounded-lg p-2 min-h-[200px]" id="day-3"></div>
+          <div class="border rounded-lg p-2 min-h-[200px]" id="day-4"></div>
+          <div class="border rounded-lg p-2 min-h-[200px]" id="day-5"></div>
+          <div class="border rounded-lg p-2 min-h-[200px]" id="day-6"></div>
+          <div class="border rounded-lg p-2 min-h-[200px]" id="day-7"></div>
+      </div>
+  </div>
+  <div id="activityModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <h3 class="text-lg font-bold mb-4">Add Activity</h3>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Name</label>
+                <input type="text" id="activityName" class="w-full px-3 py-2 border rounded-lg">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Category</label>
+                <select id="activityCategory" class="w-full px-3 py-2 border rounded-lg">
+                    <!-- Categories will be populated here -->
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Start Time</label>
+                <input type="time" id="activityStartTime" class="w-full px-3 py-2 border rounded-lg">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">End Time</label>
+                <input type="time" id="activityEndTime" class="w-full px-3 py-2 border rounded-lg">
+            </div>
+            <div class="flex justify-end space-x-4">
+                <button id="closeActivityModal" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                    Cancel
+                </button>
+                <button id="saveActivity" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+    <?!= include('main.js'); ?>
   </body>
+
 </html>
+
