@@ -474,3 +474,56 @@ function deleteActivity(id) {
   console.log(response);
   return JSON.stringify(response);
 }
+
+function getAllActivities() {
+  const response = db.getAll(
+    activityTableConfig.tableName,
+    (options = {}),
+    (useCache = false)
+  );
+  console.log(response.status);
+  console.log(response.data.length);
+  console.log(response.data[0]);
+
+  return JSON.stringify(response);
+}
+
+function readActivityFromDaySchedule(dayScheduleId) {
+  const response = db.getJunctionRecords(
+    (junctionTableName = activityTableConfig.tableName),
+    (sourceTableName = dayScheduleTableConfig.tableName),
+    (targetTableName = categoryTableConfig.tableName),
+    (sourceId = dayScheduleId),
+    (options = {})
+  );
+
+  console.log(response.status);
+  console.log(response.message);
+  console.log(response.metadata);
+
+  for (record of response.data) {
+    console.log(record);
+  }
+
+  return JSON.stringify(response);
+}
+
+function readActivityFromCategory(categoryId) {
+  const response = db.getJunctionRecords(
+    (junctionTableName = activityTableConfig.tableName),
+    (sourceTableName = categoryTableConfig.tableName),
+    (targetTableName = dayScheduleTableConfig.tableName),
+    (sourceId = categoryId),
+    (options = {})
+  );
+
+  console.log(response.status);
+  console.log(response.message);
+  console.log(response.metadata);
+
+  for (record of response.data) {
+    console.log(record);
+  }
+
+  return JSON.stringify(response);
+}
